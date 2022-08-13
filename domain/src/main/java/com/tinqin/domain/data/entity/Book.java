@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "books")
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

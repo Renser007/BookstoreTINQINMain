@@ -10,9 +10,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "publishers")
+@Table(name = "publisher")
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class Publisher {
 
     @Id
@@ -21,7 +21,7 @@ public class Publisher {
 
     private String publisherName;
 
-    @OneToMany(mappedBy = "publishers")
+    @OneToMany(mappedBy = "publisher")
     private Set<Book> books = new HashSet<>();
 
     public Publisher(Long publisherId, String publisherName) {

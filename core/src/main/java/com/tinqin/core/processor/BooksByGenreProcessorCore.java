@@ -8,6 +8,7 @@ import com.tinqin.api.model.bookbygenre.BooksGenreRequest;
 import com.tinqin.api.model.bookbygenre.BooksGenreResponse;
 import com.tinqin.api.operation.BooksByGenreProcessor;
 import com.tinqin.core.exception.GenreNotFoundException;
+import com.tinqin.domain.data.entity.Book;
 import com.tinqin.domain.data.entity.Genre;
 import com.tinqin.domain.data.repository.BookRepository;
 import com.tinqin.domain.data.repository.GenreRepository;
@@ -39,8 +40,11 @@ public class BooksByGenreProcessorCore implements BooksByGenreProcessor {
         return Try.of(()->{
             final Genre genre = genreRepository.getGenreByGenreName(input.getGenre()).orElseThrow(GenreNotFoundException::new);
             final List<BookModel> booksByGenre = new ArrayList<>();
-            Stream.of(bookRepository.getBooksByGenre(genre))
-                    .forEach(b -> booksByGenre.add(conversionService.convert(b, BookModel.class)));
+            bookRepository.getBooksByGenre(genre).stream()
+                    .forEach(b -> {
+                        booksByGenre.add(conversionService.convert(b, BookModel.class));
+                    });
+
             return BooksGenreResponse.builder()
                     .booksByGenre(booksByGenre)
                     .build();
