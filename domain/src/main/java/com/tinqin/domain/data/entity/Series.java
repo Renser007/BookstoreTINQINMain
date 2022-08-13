@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "series")
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class Series {
 
     @Id
