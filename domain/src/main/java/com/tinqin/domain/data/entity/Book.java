@@ -32,12 +32,17 @@ public class Book {
 
     private Double price;
 
-    public Book(String bookName, Series series, Author author, Genre genre, Double price) {
+    @ManyToOne
+    @JoinColumn(name="publisherId")
+    private Publisher publisher;
+
+    public Book(String bookName, Series series, Author author, Genre genre, Double price, Publisher publisher) {
         this.bookName = bookName;
         this.series = series;
         this.author = author;
         this.genre = genre;
         this.price = price;
+        this.publisher = publisher;
     }
 
     public Book() {
@@ -49,11 +54,11 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(bookId, book.bookId) && Objects.equals(bookName, book.bookName) && Objects.equals(series, book.series) && Objects.equals(author, book.author) && Objects.equals(genre, book.genre) && Objects.equals(price, book.price);
+        return Objects.equals(bookId, book.bookId) && Objects.equals(bookName, book.bookName) && Objects.equals(series, book.series) && Objects.equals(author, book.author) && Objects.equals(genre, book.genre) && Objects.equals(price, book.price) && Objects.equals(publisher, book.publisher);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bookId, bookName, series, author, genre, price);
+        return Objects.hash(bookId, bookName, series, author, genre, price, publisher);
     }
 }
