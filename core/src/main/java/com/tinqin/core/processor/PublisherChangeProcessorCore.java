@@ -42,7 +42,7 @@ public class PublisherChangeProcessorCore implements PublisherChangeProcessor {
 
 
     @Override
-    public Either<Error, PublisherChangeResponse> process(final PublisherChangeRequest input) {//doesn't enter try of
+    public Either<Error, PublisherChangeResponse> process(final PublisherChangeRequest input) {
         return Try.of(() -> {
             final BookResponse bookResponse = bookProcessor.process(new BookRequest(input.getBookId())).getOrElseThrow(PublisherChangeNotPossibleException::new);
             final PublisherResponse oldPublisherResponse = publisherProcessor.process(new PublisherRequest(input.getOldPublisherId())).getOrElseThrow(PublisherChangeNotPossibleException::new);
