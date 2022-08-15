@@ -8,7 +8,6 @@ import com.tinqin.api.model.bookbygenre.BooksGenreRequest;
 import com.tinqin.api.model.bookbygenre.BooksGenreResponse;
 import com.tinqin.api.operation.BooksByGenreProcessor;
 import com.tinqin.core.exception.GenreNotFoundException;
-import com.tinqin.domain.data.entity.Book;
 import com.tinqin.domain.data.entity.Genre;
 import com.tinqin.domain.data.repository.BookRepository;
 import com.tinqin.domain.data.repository.GenreRepository;

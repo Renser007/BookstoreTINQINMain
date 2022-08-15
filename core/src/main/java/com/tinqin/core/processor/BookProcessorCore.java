@@ -26,7 +26,7 @@ public class BookProcessorCore implements BookProcessor {
     }
 
     @Override
-    public Either<Error, BookResponse> process(BookRequest input) {
+    public Either<Error, BookResponse> process(final BookRequest input) {
         return Try.of(() -> {
             final Book book = bookRepository.findById(input.getBookId()).orElseThrow(BookNotFoundException::new);
             return conversionService.convert(book, BookResponse.class);
