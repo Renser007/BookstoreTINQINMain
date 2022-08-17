@@ -1,4 +1,4 @@
-package com.tinqin.api.model.book;
+package com.tinqin.api.model.bookdetails;
 
 import com.tinqin.api.base.OperationResult;
 import lombok.AccessLevel;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter(AccessLevel.PRIVATE)
-public class BookResponse implements OperationResult {
+public class BookDetailsResponse implements OperationResult {
 
     private String bookName;
     private String series;
@@ -17,5 +17,10 @@ public class BookResponse implements OperationResult {
     private String author;
     private String genre;
     private String publisher;
+    private String cover;
+    private String rating;
+    private String dateOfPublishing;
+    private String numberOfPages;
+    private String resume;
 
 }
