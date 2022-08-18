@@ -5,10 +5,13 @@ import com.tinqin.api.model.bookbygenre.BooksGenreRequest;
 import com.tinqin.api.model.bookbygenre.BooksGenreResponse;
 import com.tinqin.api.model.bookdetails.BookDetailsRequest;
 import com.tinqin.api.model.bookdetails.BookDetailsResponse;
+import com.tinqin.api.model.booksbyprice.BooksByPriceRequest;
+import com.tinqin.api.model.booksbyprice.BooksByPriceResponse;
 import com.tinqin.api.model.publisherchange.PublisherChangeRequest;
 import com.tinqin.api.model.publisherchange.PublisherChangeResponse;
 import com.tinqin.api.operation.BookDetailsProcessor;
 import com.tinqin.api.operation.BooksByGenreProcessor;
+import com.tinqin.api.operation.OrderBooksByPriceProcessor;
 import com.tinqin.api.operation.PublisherChangeProcessor;
 import io.vavr.control.Either;
 import org.springframework.http.HttpStatus;
@@ -23,11 +26,13 @@ public class MainController {
     private final BooksByGenreProcessor booksByGenreProcessor;
     private final PublisherChangeProcessor publisherChangeProcessor;
     private final BookDetailsProcessor bookDetailsProcessor;
+    private final OrderBooksByPriceProcessor orderBooksByPriceProcessor;
 
-    public MainController(BooksByGenreProcessor booksByGenreProcessor, PublisherChangeProcessor publisherChangeProcessor, BookDetailsProcessor bookDetailsProcessor) {
+    public MainController(BooksByGenreProcessor booksByGenreProcessor, PublisherChangeProcessor publisherChangeProcessor, BookDetailsProcessor bookDetailsProcessor, OrderBooksByPriceProcessor orderBooksByPriceProcessor) {
         this.booksByGenreProcessor = booksByGenreProcessor;
         this.publisherChangeProcessor = publisherChangeProcessor;
         this.bookDetailsProcessor = bookDetailsProcessor;
+        this.orderBooksByPriceProcessor = orderBooksByPriceProcessor;
     }
 
     @PostMapping("/booksByGenre")
@@ -54,6 +59,16 @@ public class MainController {
 
     public ResponseEntity<?> getBookDetails(@RequestBody final BookDetailsRequest bookDetailsRequest){
         Either<Error, BookDetailsResponse> response=bookDetailsProcessor.process(bookDetailsRequest);
+        if(response.isLeft()){
+            return ResponseEntity.status(response.getLeft().getCode()).body(response.getLeft().getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(response.get());
+    }
+
+    @PostMapping("/sortAllBooks")
+
+    public ResponseEntity<?> sortAllBooks(@RequestBody final BooksByPriceRequest bookDetailsRequest){
+        Either<Error, BooksByPriceResponse> response=orderBooksByPriceProcessor.process(bookDetailsRequest);
         if(response.isLeft()){
             return ResponseEntity.status(response.getLeft().getCode()).body(response.getLeft().getMessage());
         }
