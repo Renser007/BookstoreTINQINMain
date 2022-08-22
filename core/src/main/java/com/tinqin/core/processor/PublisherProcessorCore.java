@@ -28,7 +28,8 @@ public class PublisherProcessorCore implements PublisherProcessor {
     @Override
     public Either<Error, PublisherResponse> process(final PublisherRequest input) {
         return Try.of(() -> {
-            final Publisher publisher = publisherRepository.findById(input.getPublisherId()).orElseThrow(PublisherNotFoundException::new);
+            final Publisher publisher = publisherRepository.findById(input.getPublisherId())
+                    .orElseThrow(PublisherNotFoundException::new);
             return conversionService.convert(publisher, PublisherResponse.class);
         }).toEither()
                 .mapLeft(throwable -> {

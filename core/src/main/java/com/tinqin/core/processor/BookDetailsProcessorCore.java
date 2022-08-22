@@ -39,9 +39,11 @@ public class BookDetailsProcessorCore implements BookDetailsProcessor {
     public Either<Error, BookDetailsResponse> process(final BookDetailsRequest input) {
         return Try.of(() -> {
 
-            final Book book = bookRepository.findBookByBookName(input.getBookName()).orElseThrow(BookNotFoundException::new);
+            final Book book = bookRepository.findBookByBookName(input.getBookName())
+                    .orElseThrow(BookNotFoundException::new);
 
-            final BookResponse bookResponse = bookProcessor.process(new BookRequest(book.getBookId())).getOrElseThrow(BookNotFoundException::new);
+            final BookResponse bookResponse = bookProcessor.process(new BookRequest(book.getBookId()))
+                    .getOrElseThrow(BookNotFoundException::new);
 
             final FeignBookDetailsResponse feignBookDetailsResponse = bookDetailsClient.getBookDetails(FeignBookDetailsRequest.builder()
                     .bookName(book.getBookName())

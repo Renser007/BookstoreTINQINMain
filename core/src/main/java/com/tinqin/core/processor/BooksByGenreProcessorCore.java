@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -37,16 +38,15 @@ public class BooksByGenreProcessorCore implements BooksByGenreProcessor {
     public Either<Error, BooksGenreResponse> process(BooksGenreRequest input) {
 
         return Try.of(()->{
-            final Genre genre = genreRepository.getGenreByGenreName(input.getGenre()).orElseThrow(GenreNotFoundException::new);
-            final List<BookModel> booksByGenre = new ArrayList<>();
-            bookRepository.getBooksByGenre(genre).stream()
-                    .forEach(b -> {
-                        booksByGenre.add(conversionService.convert(b, BookModel.class));
-                    });
+            final Genre genre = genreRepository.getGenreByGenreName(input.getGenre())
+                    .orElseThrow(GenreNotFoundException::new);
 
             return BooksGenreResponse.builder()
-                    .booksByGenre(booksByGenre)
+                    .booksByGenre(bookRepository.getBooksByGenre(genre).stream()
+                            .map(b -> conversionService.convert(b, BookModel.class))
+                            .collect(Collectors.toList()))
                     .build();
+
         }).toEither()
                 .mapLeft(throwable -> {
                     if (throwable instanceof GenreNotFoundException){
