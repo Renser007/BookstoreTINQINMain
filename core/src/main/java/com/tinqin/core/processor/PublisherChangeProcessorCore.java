@@ -44,13 +44,18 @@ public class PublisherChangeProcessorCore implements PublisherChangeProcessor {
     @Override
     public Either<Error, PublisherChangeResponse> process(final PublisherChangeRequest input) {
         return Try.of(() -> {
-            final BookResponse bookResponse = bookProcessor.process(new BookRequest(input.getBookId())).getOrElseThrow(PublisherChangeNotPossibleException::new);
-            final PublisherResponse oldPublisherResponse = publisherProcessor.process(new PublisherRequest(input.getOldPublisherId())).getOrElseThrow(PublisherChangeNotPossibleException::new);
-            final PublisherResponse newPublisherResponse = publisherProcessor.process(new PublisherRequest(input.getNewPublisherId())).getOrElseThrow(PublisherChangeNotPossibleException::new);
+            final BookResponse bookResponse = bookProcessor.process(new BookRequest(input.getBookId()))
+                    .getOrElseThrow(PublisherChangeNotPossibleException::new);
+            final PublisherResponse oldPublisherResponse = publisherProcessor.process(new PublisherRequest(input.getOldPublisherId()))
+                    .getOrElseThrow(PublisherChangeNotPossibleException::new);
+            final PublisherResponse newPublisherResponse = publisherProcessor.process(new PublisherRequest(input.getNewPublisherId()))
+                    .getOrElseThrow(PublisherChangeNotPossibleException::new);
 
-            return Stream.of(bookRepository.findBookByBookName(bookResponse.getBookName()).orElseThrow(BookNotFoundException::new))
+            return Stream.of(bookRepository.findBookByBookName(bookResponse.getBookName())
+                            .orElseThrow(BookNotFoundException::new))
                     .map(b -> {
-                        Publisher publisher =publisherRepository.findPublisherByPublisherName(newPublisherResponse.getPublisherName()).orElseThrow(PublisherNotFoundException::new);
+                        Publisher publisher =publisherRepository.findPublisherByPublisherName(newPublisherResponse.getPublisherName())
+                                .orElseThrow(PublisherNotFoundException::new);
                         b.setPublisher(publisher);
                         bookRepository.save(b);
                         return publisher;
