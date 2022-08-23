@@ -1,6 +1,7 @@
 # Bookstore
 
 Link to Service book information from external api: https://github.com/Renser007/LibraryExternalApi
+Link to Payment Service - https://github.com/Renser007/PaymentServiceApi
 
 Всяка книга има име, автор, име на поредица, жанр, цена и издателство.
 -Операция за извеждане на всички книги от даден жанр.
