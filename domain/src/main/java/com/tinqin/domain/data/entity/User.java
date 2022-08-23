@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
 @Getter
-@Setter(AccessLevel.PRIVATE)
+@Setter
 public class User {
 
     @Id
@@ -19,24 +20,14 @@ public class User {
 
     private String email;
 
-    public User(Long userId, String email) {
-        this.userId = userId;
+    @OneToMany(mappedBy = "user")
+    private Set<Transaction> transactions=new HashSet<>();
+
+    public User(String email, Set<Transaction> transactions) {
         this.email = email;
+        this.transactions = transactions;
     }
 
     public User() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(userId, user.userId) && Objects.equals(email, user.email);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(userId, email);
     }
 }
